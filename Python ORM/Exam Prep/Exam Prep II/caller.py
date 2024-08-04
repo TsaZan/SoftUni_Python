@@ -65,7 +65,8 @@ def get_last_sold_products():
 # print(get_last_sold_products())
 
 def get_top_products():
-    products = Product.objects.annotate(qty_sold=Count('order_products')).filter(qty_sold__gt=0).order_by('-qty_sold', 'name')[:5]
+    products = Product.objects.annotate(qty_sold=Count('order_products')).filter(qty_sold__gt=0).order_by('-qty_sold',
+                                                                                                          'name')[:5]
 
     if not Order.objects.all():
         return ""
@@ -76,15 +77,17 @@ def get_top_products():
         result.append(f'{p.name}, sold {p.qty_sold} times')
     return '\n'.join(result)
 
+
 #
 # print(get_top_products())
 
 def apply_discounts():
     orders = Order.objects.annotate(count=Count('products')).filter(is_completed=False, count__gt=2)
     order_count = orders.count()
-    orders.update(total_price = F('total_price') * 0.9)
+    orders.update(total_price=F('total_price') * 0.9)
 
     return f"Discount applied to {order_count if order_count > 0 else 0} orders."
+
 
 # print(apply_discounts())
 

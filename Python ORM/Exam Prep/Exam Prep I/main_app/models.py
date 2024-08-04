@@ -12,8 +12,10 @@ class Director(models.Model):
     nationality = models.CharField(max_length=50, default="Unknown")
     years_of_experience = models.SmallIntegerField(validators=[MinValueValidator(0)], default=0)
     objects = DirectorManager()
+
     def __str__(self):
         return self.full_name
+
 
 class Actor(models.Model):
     full_name = models.CharField(max_length=120, validators=[MinLengthValidator(2)])
@@ -21,8 +23,10 @@ class Actor(models.Model):
     nationality = models.CharField(max_length=50, default="Unknown")
     is_awarded = models.BooleanField(default=False)
     last_updated = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return self.full_name
+
 
 class Movie(models.Model):
     GENRE_CHOICES = (('Action', 'Action'),
@@ -42,7 +46,6 @@ class Movie(models.Model):
     starring_actor = models.ForeignKey(Actor, on_delete=models.SET_NULL, null=True, blank=True,
                                        related_name='movie_star')
     actors = models.ManyToManyField(Actor, related_name='movie_actors')
+
     def __str__(self):
         return self.title
-
-

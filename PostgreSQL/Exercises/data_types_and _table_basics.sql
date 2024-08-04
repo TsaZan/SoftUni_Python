@@ -1,39 +1,46 @@
-CREATE TABLE  employees(
-    id serial primary key not null ,
-    first_name varchar(30),
-    last_name varchar(50),
-    hiring_date date default '2023-01-01',
-    salary numeric(10,2),
-    devices_number int
-);
-CREATE table departments(
-    id serial primary key ,
+create table minions(
+    id int primary key ,
     name varchar(30),
-    code char(3),
-    description text
+    age integer
 );
 
-create table issues(
-    id serial primary key unique ,
-    description varchar(150),
-    date date,
-    start timestamp
-);
+alter table minions rename to minions_info ;
 
 
-ALTER TABLE employees
-    add column middle_name varchar(50);
+alter table minions_info
+add column code   char(4),
+add column task   text,
+    add column salary numeric(8, 3);
 
 
-alter table employees
-    alter column salary set not null,
-    alter column salary set default 0,
-    alter column hiring_date set not null;
+alter table minions_info
+    rename column salary to banana;
+
+alter table minions_info
+    add column email    varchar(20),
+    add column equipped boolean not null;
 
 
-alter table employees
-    alter column middle_name type varchar(100);
+create type type_mood as enum ('happy', 'relaxed', 'stressed', 'sad');
+alter table minions_info
+    add column mood type_mood;
 
-truncate issues;
+alter table minions_info
+alter column age set default 0,
+    alter column name set default ' ',
+    alter column code set default ' ';
 
-drop table departments;
+
+alter table minions_info
+add constraint unique_containt
+unique (id, email),
+    add constraint banana_check
+check ( banana > 0 );
+
+
+alter table minions_info
+alter column task type varchar(150);
+
+
+
+
